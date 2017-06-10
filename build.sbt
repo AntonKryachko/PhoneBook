@@ -15,7 +15,7 @@ lazy val root = (project in file("."))
                               ws,
                               "org.postgresql" % "postgresql" % "9.3-1102-jdbc4",
                               "org.liquibase" % "liquibase-core" % "3.5.3",
-                              "com.github.aselab" % "squeryl" % "0.9.5"
+                              "org.squeryl" %% "squeryl" % "0.9.5-7"
 //                              ,"com.typesafe.slick" % "slick_2.11" % "3.2.0"
                               )
 

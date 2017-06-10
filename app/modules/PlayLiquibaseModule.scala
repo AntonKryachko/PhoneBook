@@ -85,7 +85,6 @@ class PlayLiquibase(environment: Environment, config: Configuration) {
   private def liquibase() = {
 
     val liquibaseConfOpt = config.getConfig("liquibase")
-    println(config.getConfig("liquibase").toString)
     val enableLiquibase = liquibaseConfOpt.flatMap(_.getBoolean("enable")).getOrElse(true)
 
     val urlOpt          = liquibaseConfOpt.flatMap(_.getString("url"))

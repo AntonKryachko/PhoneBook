@@ -5,13 +5,13 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
     <changeSet id="Create USER table PB-2" author="akruachko">
         <createTable tableName="USER">
-            <column name="ID" type="INTEGER" autoIncrement="true">
+            <column name="ID" type="VARCHAR(50)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="NAME" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="PHONE_NUMBER" type="INTEGER">
+            <column name="PHONE_NUMBER" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
