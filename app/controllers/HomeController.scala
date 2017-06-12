@@ -3,7 +3,7 @@ package controllers
 import javax.inject._
 
 import models.entity.User
-import models.service.UserService
+import models.service.{UserService, UserServiceImpl}
 import play.api._
 import play.api.mvc._
 
@@ -20,7 +20,7 @@ trait Generator
 }
 
 @Singleton
-class HomeController @Inject()(user: UserService) extends Controller with Generator{
+class HomeController @Inject() extends Controller with Generator{
 
   /**
    * Create an Action to render an HTML page with a welcome message.
@@ -29,7 +29,7 @@ class HomeController @Inject()(user: UserService) extends Controller with Genera
    * a path of `/`.
    */
   def index = Action {
-     Ok(views.html.index("sad"))
+    Ok(views.html.index("sad"))
   }
 
 }
