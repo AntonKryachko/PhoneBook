@@ -5,7 +5,7 @@ package models.service
   */
 trait Service[T] {
   def insert (data: T)
-  def selectAll(): Seq[T]
+  def selectAll2(): Seq[T]
   def selectById(id: String): T
   def delete(id: String)
   def update2(data: T)

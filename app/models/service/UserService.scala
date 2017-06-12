@@ -25,9 +25,9 @@ class UserServiceImpl @Inject()(db: Database) extends UserService{
     }
   }
 
-  override def selectAll(): Seq[User] = {
+  override def selectAll2(): Seq[User] = {
     transaction{
-      from(user)(u => select(u)).toSeq
+      from(user)(u => select(u)).toList
     }
   }
 
