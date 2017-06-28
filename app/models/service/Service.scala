@@ -9,4 +9,5 @@ trait Service[T] {
   def selectById(id: String): T
   def delete(id: String)
   def update2(data: T)
+  def findByName(name: String): Boolean
 }
