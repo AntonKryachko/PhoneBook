@@ -1,0 +1,130 @@
+@import models.entity.User
+@(users: Seq[User], error: Option[String] = None)
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Phone Book</title>
+      <script src="@routes.Assets.versioned("""javascripts/jquery-3.2.1.min.js""")"></script>
+      <script src="@routes.Assets.versioned("""javascripts/bootstrap.min.js""")"></script>
+      <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/bootstrap.css")">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="col-md-2" style="padding-left: 50px; ">
+        <h3>Главная</h3>
+      </div>
+      <div class="col-md-3" style="padding-top: 12px">
+        <div class="input-group">
+          <input id="search" type="text" class="form-control" placeholder="Search">
+          <span class="input-group-btn">
+            <button id="searchButton" class="btn btn-default" type="button" onclick="search()">Ok</button>
+            <button id="reloadButton" onclick="document.location.href = '@routes.HomeController.index()' " class="btn btn-default" type="submit">
+                <span class="glyphicon glyphicon-refresh"></span>
+            </button>
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#addModal">
+              <span class="glyphicon glyphicon-plus"></span>
+            </button>
+          </span>
+        </div>
+      </div>
+    </nav>
+    <div style="padding: 30px">
+    </div>
+    <div class="container">
+    @if(error.nonEmpty){
+        <div class="alert alert-danger">
+           <!--  Кнопка для закрытия сообщения, созданная с помощью элемента a -->
+            <a href="#" class="close" data-dismiss="alert">×</a>
+            @error.getOrElse("")
+        </div>
+    }
+      <div class="container col-md-7">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th colspan="2">Phone number</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for((user, i) <- users.view.zipWithIndex){
+                <tr>
+                    <td id="@user.id">@{i+1}</td>
+                    <td id="nameTb">@user.name</td>
+                    <td id="phoneNumber">@user.phoneNumber</td>
+                    <td>
+                        <div class="btn-group btn-group-xs">
+                            <button id="edit" onclick="update('@user.id', '@user.name', '@user.phoneNumber')" class="btn btn-default glyphicon glyphicon-edit" data-toggle="modal" data-target="#editModal"></button>
+                            <button id="delete" onclick="remove('@user.id')" data-id="@user.id" class="removeid btn btn-default glyphicon glyphicon-trash"></button>
+                        </div>
+                    </td>
+                </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+        <script>
+            function remove(id) {
+                var ol = '/removeUser/';
+                document.location.href = ol + id;
+            }
+
+        </script>
+      <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="myModalLabel" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Модалка</h4>
+            </div>
+             <form action="@routes.HomeController.addNewUser()" method="get">
+               <div class="modal-body">
+                    <input name="id" style="display: none">
+                    <input id="nameField" name="name" style="margin: 5px" class="form-control" placeholder="Name">
+                    <input id="phoneNumberField" name="phoneNumber" style="margin: 5px" class="form-control" placeholder="Phone number">
+               </div>
+               <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+               </div>
+             </form>
+          </div>
+        </div>
+      </div>
+        <div class="modal fade" id="editModal" tabindex="0" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Модалка</h4>
+                    </div>
+                    <form action="@routes.HomeController.updateUser()" method="get">
+                        <div class="modal-body">
+                            <input class="uId" name="id" style="display: none" value="">
+                            <input name="name" style="margin: 5px" class="form-control uName" placeholder="Name" value="">
+                            <input name="phoneNumber" style="margin: 5px" class="form-control uPhoneNumber" placeholder="Phone number" value="">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+            function update(id, name, phoneNumber) {
+                $(".uId").val(id);
+                $(".uName").val(name);
+                $(".uPhoneNumber").val(phoneNumber);
+            }
+            function search() {
+               document.location.href = "/fullSearch/" + $("#search").val();
+            }
+    </script>
+  </body>
+</html>

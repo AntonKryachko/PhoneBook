@@ -2,18 +2,20 @@ name := """play-scala"""
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
-
 scalaVersion := "2.11.11"
+
+lazy val root = (project in file("."))
+  .enablePlugins(PlayScala)
+
 
   libraryDependencies ++= Seq(
                               jdbc,
+                              javaJdbc,
                               cache,
                               ws,
-                              "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0",
-                              "org.postgresql" % "postgresql" % "42.1.1",
+                              "org.postgresql" % "postgresql" % "9.3-1102-jdbc4",
                               "org.liquibase" % "liquibase-core" % "3.5.3",
-                              "com.github.aselab" % "squeryl" % "0.9.5"
+                              "org.squeryl" %% "squeryl" % "0.9.5-7"
 //                              ,"com.typesafe.slick" % "slick_2.11" % "3.2.0"
                               )
 
