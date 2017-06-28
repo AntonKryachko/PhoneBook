@@ -11,7 +11,7 @@
             <column name="NAME" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="PHONE_NUMBER" type="BIGINT">
+            <column name="PHONE_NUMBER" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

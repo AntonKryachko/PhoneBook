@@ -33,7 +33,7 @@ class UserServiceImpl @Inject()(db: Database) extends UserService{
 
   override def selectById(id: String): User = {
     transaction{
-      from(user)(u => where(u.id === id) select u).single
+      from(user)(u => where(u.id === id) select u).headOption.get
     }
   }
 
@@ -46,6 +46,12 @@ class UserServiceImpl @Inject()(db: Database) extends UserService{
   override def update2(data: User): Unit = {
     transaction{
       update(user)(u => where(u.id === data.id) set(u.name := data.name, u.phoneNumber := data.phoneNumber))
+    }
+  }
+
+  override def findByName(name: String): Boolean = {
+    transaction {
+      from(user)(u => where(u.name === name) select u).headOption.nonEmpty
     }
   }
 }
