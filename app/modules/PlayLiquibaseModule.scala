@@ -15,7 +15,6 @@ import scala.collection.JavaConverters._
 class PlayLiquibaseModule extends Module {
 
   override def bindings (environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
-    // eagerly bind module so it runs on Play startup
     bind[PlayLiquibase].to(new PlayLiquibase(environment, configuration)).eagerly()
   )
 
@@ -27,15 +26,9 @@ class PlayLiquibase(environment: Environment, config: Configuration) {
   private final val log = Logger(classOf[PlayLiquibase])
 
   private val contexts = config.getStringList("liquibase.context").map(l => new Contexts(l)).getOrElse(new Contexts())
-  //liquibase.changelog
-  // Constructor
   upgradeSchema(config.getString("app.version"))
 
-  /**
-    * Run Liquibase schema upgrade
-    *
-    * @param tag Optionally tag schema version
-    */
+
   def upgradeSchema (tag: Option[String] = None): Unit = {
     liquibase() match {
       case Some(lb) =>
@@ -46,10 +39,6 @@ class PlayLiquibase(environment: Environment, config: Configuration) {
     }
   }
 
-
-  /**
-    * Show pending schema changes in the log but don't run them.
-    */
   def showSql (): Unit = liquibase().foreach {
     lb =>
       val writer = new StringWriter()
@@ -58,11 +47,6 @@ class PlayLiquibase(environment: Environment, config: Configuration) {
   }
 
 
-  /**
-    * Check if there are pending schema changes.
-    *
-    * @return true if there are pending changes
-    */
   def needsUpgrade: Boolean = liquibase().exists { lb =>
     val unrunChanges = lb.listUnrunChangeSets(contexts, new LabelExpression()).asScala
     unrunChanges.foreach {
@@ -72,9 +56,6 @@ class PlayLiquibase(environment: Environment, config: Configuration) {
   }
 
 
-  /**
-    * Force unlock Liquibase tables
-    */
   def unlock (): Unit = liquibase().foreach {
     lb =>
       log.info("Releasing liquibase locks")
